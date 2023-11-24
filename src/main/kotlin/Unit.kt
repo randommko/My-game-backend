@@ -1,8 +1,8 @@
 import java.util.concurrent.atomic.AtomicInteger
 
-class Unit (unitType: UnitType, coords: Coords) {
+class Unit (unitType: UnitType, coords: Coords, id: Int) {
     private val count = AtomicInteger(0)
-    private var id = count.incrementAndGet()
+    private val id = id
     private var type: UnitType = unitType
     private var health = unitType.getHealth()
     private var isAlive = true

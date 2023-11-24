@@ -1,7 +1,7 @@
 class GameSettings {
-    object globalParams {
-        const val HUMAN_MAX_QTY = 2
-        const val ORC_MAX_QTY = 2
+    object GlobalParams {
+        const val HUMAN_MAX_QTY = 3
+        const val ORC_MAX_QTY = 3
 
         const val FIELD_X = 10
         const val FIELD_Y = 10

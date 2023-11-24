@@ -13,18 +13,18 @@ class UnitType (race: Race) {
     }
     init {
         if (race == Race.HUMAN) {
-            health = GameSettings.globalParams.HUMAN_DAMAGE
-            damage = GameSettings.globalParams.HUMAN_DAMAGE
-            speed = GameSettings.globalParams.HUMAN_SPEED
-            visibleDistance = GameSettings.globalParams.HUMAN_VISIBLE_DISTANCE
-            regeneration = GameSettings.globalParams.HUMAN_REGENERATION
+            health = GameSettings.GlobalParams.HUMAN_HEALTH
+            damage = GameSettings.GlobalParams.HUMAN_DAMAGE
+            speed = GameSettings.GlobalParams.HUMAN_SPEED
+            visibleDistance = GameSettings.GlobalParams.HUMAN_VISIBLE_DISTANCE
+            regeneration = GameSettings.GlobalParams.HUMAN_REGENERATION
         }
         if (race == Race.ORC) {
-            health = GameSettings.globalParams.ORC_HEALTH
-            damage = GameSettings.globalParams.ORC_DAMAGE
-            speed = GameSettings.globalParams.ORC_SPEED
-            visibleDistance = GameSettings.globalParams.ORC_VISIBLE_DISTANCE
-            regeneration = GameSettings.globalParams.ORC_REGENERATION
+            health = GameSettings.GlobalParams.ORC_HEALTH
+            damage = GameSettings.GlobalParams.ORC_DAMAGE
+            speed = GameSettings.GlobalParams.ORC_SPEED
+            visibleDistance = GameSettings.GlobalParams.ORC_VISIBLE_DISTANCE
+            regeneration = GameSettings.GlobalParams.ORC_REGENERATION
         }
     }
 
