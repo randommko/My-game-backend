@@ -76,7 +76,7 @@ class GameApp {
         println("--- --- --- ---")
     }
 
-    fun doGameStep(group: HashMap<UnitType.Race, HashMap<Coords, Unit>>) {
+    fun doGameStep(group: UnitType.Race, unitMap: HashMap<Coords, Unit>) {
 
         //Передвинуть юнитов
         //Выбрать в какую сторону двигаться - getMoveDestination(Coords actualCoords)
@@ -87,29 +87,24 @@ class GameApp {
 
         val movedUnits = HashMap<Coords, Coords>()  //key = новые координаты, value = старые координаты
 
-        for (unitMap in group) {
-            for ((actualCoords, unit) in unitMap) {
-                val destination: Coords = getMoveDestination(actualCoords)
-                val newCoords: Coords = getMoveCoords(
-                    actualCoords,
-                    destination.X * unit.getSpeed(),
-                    destination.Y * unit.getSpeed()
-                )
-                //TODO: добавить бой между юнитами
+        for ((actualCoords, unit) in unitMap) {
+            val destination: Coords = getMoveDestination(actualCoords)
+            val newCoords: Coords = getMoveCoords(
+                actualCoords,
+                destination.X * unit.getSpeed(),
+                destination.Y * unit.getSpeed()
+            )
 
-                if (gameField.containsKey(newCoords))
+            if (gameField.containsKey(newCoords))
                 //TODO: драка
-                else if (!gameField.containsKey(newCoords))
-                    movedUnits[newCoords] = actualCoords
-            }
-
-            for ((key, value) in movedUnits) {
-                if (key != value)
-                    moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
-            }
+            else if (!gameField.containsKey(newCoords))
+                movedUnits[newCoords] = actualCoords
         }
 
-
+        for ((key, value) in movedUnits) {
+            if (key != value)
+                moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
+        }
     }
 
     private fun getMoveDestination(actualCoords: Coords): Coords {

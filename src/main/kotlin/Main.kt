@@ -13,8 +13,8 @@ fun main() {
         while (check) {
             println("Шаг: $stepCounter")
             gameApp.printField()
-            gameApp.doGameStep(gameApp.humanUnits)
-            gameApp.doGameStep(gameApp.orcUnits)
+            gameApp.doGameStep(UnitType.Race.HUMAN, gameApp.humanUnits)
+            gameApp.doGameStep(UnitType.Race.ORC, gameApp.orcUnits)
             try {
                 Thread.sleep(300)
             } catch (e: InterruptedException) {

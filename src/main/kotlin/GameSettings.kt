@@ -1,10 +1,10 @@
 class GameSettings {
     object GlobalParams {
-        const val HUMAN_MAX_QTY = 1
-        const val ORC_MAX_QTY = 1
+        const val HUMAN_MAX_QTY = 3
+        const val ORC_MAX_QTY = 3
 
-        const val FIELD_X = 3
-        const val FIELD_Y = 3
+        const val FIELD_X = 10
+        const val FIELD_Y = 10
 
         const val HUMAN_HEALTH = 50
         const val ORC_HEALTH = 50
