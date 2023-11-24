@@ -1,11 +1,6 @@
-class Coords {
-    var X = 0
-    var Y = 0
-
-    fun Coords(x: Int, y: Int) {
-        X = x
-        Y = y
-    }
+class Coords (x: Int, y: Int) {
+    var X = x
+    var Y = y
 
     override fun equals(obj: Any?): Boolean {
         if (this === obj) return true

@@ -1,22 +1,17 @@
-class Cell {
-    private var type: cellTypes? = null
+class Cell (
+    private var type: CellTypes) {
 
-    enum class cellTypes {
+    enum class CellTypes {
         FREE,
         UNIT,
         ROCK
     }
 
-
-    fun Cell(type: cellTypes?) {
-        this.type = type
-    }
-
-    fun getType(): cellTypes? {
+    fun getType(): CellTypes {
         return type
     }
 
-    fun setType(type: cellTypes?) {
+    fun setType(type: CellTypes) {
         this.type = type
     }
 }
