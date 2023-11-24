@@ -76,7 +76,7 @@ class GameApp {
         println("--- --- --- ---")
     }
 
-    fun doGameStep(group: UnitType.Race, unitMap: HashMap<Coords, Unit>) {
+    fun doGameStep(unitsRace: UnitType.Race, unitMap: HashMap<Coords, Unit>) {
 
         //Передвинуть юнитов
         //Выбрать в какую сторону двигаться - getMoveDestination(Coords actualCoords)
