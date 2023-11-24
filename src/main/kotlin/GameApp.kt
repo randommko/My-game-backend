@@ -1,4 +1,5 @@
 import java.util.*
+import kotlin.collections.HashMap
 
 class GameApp {
     private val gameField = HashMap<Coords, Cell>()
@@ -47,7 +48,6 @@ class GameApp {
 
                 if (group.key == UnitType.Race.ORC)
                     group.value[coords] = Unit(orcUnitType, coords, orcUnitActualNumber++)
-
             }
         }
     }
@@ -76,7 +76,7 @@ class GameApp {
         println("--- --- --- ---")
     }
 
-    fun doGameStep(unitMap: HashMap<Coords, Unit>) {
+    fun doGameStep(group: HashMap<UnitType.Race, HashMap<Coords, Unit>>) {
 
         //Передвинуть юнитов
         //Выбрать в какую сторону двигаться - getMoveDestination(Coords actualCoords)
@@ -87,25 +87,29 @@ class GameApp {
 
         val movedUnits = HashMap<Coords, Coords>()  //key = новые координаты, value = старые координаты
 
-        for ((actualCoords, unit) in unitMap) {
-            val destination: Coords = getMoveDestination(actualCoords)
-            val newCoords: Coords = getMoveCoords(
-                actualCoords,
-                destination.X * unit.getSpeed(),
-                destination.Y * unit.getSpeed()
-            )
-            //TODO: добавить бой между юнитами
+        for (unitMap in group) {
+            for ((actualCoords, unit) in unitMap) {
+                val destination: Coords = getMoveDestination(actualCoords)
+                val newCoords: Coords = getMoveCoords(
+                    actualCoords,
+                    destination.X * unit.getSpeed(),
+                    destination.Y * unit.getSpeed()
+                )
+                //TODO: добавить бой между юнитами
 
-            if (gameField.containsKey(newCoords))
-                //драка
-            else if (!gameField.containsKey(newCoords))
-                movedUnits[newCoords] = actualCoords
+                if (gameField.containsKey(newCoords))
+                //TODO: драка
+                else if (!gameField.containsKey(newCoords))
+                    movedUnits[newCoords] = actualCoords
+            }
+
+            for ((key, value) in movedUnits) {
+                if (key != value)
+                    moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
+            }
         }
 
-        for ((key, value) in movedUnits) {
-            if (key != value)
-                moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
-        }
+
     }
 
     private fun getMoveDestination(actualCoords: Coords): Coords {
