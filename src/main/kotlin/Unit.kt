@@ -2,13 +2,13 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class Unit {
     private val count = AtomicInteger(0)
-    private val id = 0
-    private val type: UnitType
+    private var id = 0
+    private var type: UnitType? = null
     private var health = 0
     private var isAlive = false
 
     fun Unit(unitType: UnitType, coords: Coords) {
-        id = Unit.count.incrementAndGet()
+        id = count.incrementAndGet()
         type = unitType
         health = unitType.getHealth()
         isAlive = true
@@ -27,19 +27,19 @@ class Unit {
     }
 
     fun getDamage(): Int {
-        return type.getDamage()
+        return type?.getDamage() ?: 0
     }
 
     fun getSpeed(): Int {
-        return type.getSpeed()
+        return type?.getSpeed() ?: 1
     }
 
     fun getRegeneration(): Int {
-        return type.getRegeneration()
+        return type?.getRegeneration() ?: 0
     }
 
     fun getVisibleDistance(): Int {
-        return type.getVisibleDistance()
+        return type?.getVisibleDistance() ?: 1
     }
 
     fun setAlive(alive: Boolean) {

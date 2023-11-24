@@ -1,11 +1,11 @@
-class UnitType {
+class UnitType constructor (race: Race) {
+
     private var health: Int? = null
     private var damage: Int? = null
     private var speed: Int? = null
     private var visibleDistance: Int? = null
     private var regeneration: Int? = null
     private var myRace: Race? = null
-
 
     enum class Race {
         HUMAN,
@@ -16,7 +16,7 @@ class UnitType {
     fun UnitType(race: Race) {
         myRace = race
         if (race == Race.HUMAN) {
-            health = GameSettings.HUMAN_HEALTH
+            health = GameSettings.HUMAN_DAMAGE
             damage = GameSettings.HUMAN_DAMAGE
             speed = GameSettings.HUMAN_SPEED
             visibleDistance = GameSettings.HUMAN_VISIBLE_DISTANCE

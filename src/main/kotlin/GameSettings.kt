@@ -19,4 +19,5 @@ class GameSettings {
 
     val HUMAN_SPEED = 1
     val ORC_SPEED = 1
+
 }
