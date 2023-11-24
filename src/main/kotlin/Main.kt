@@ -3,7 +3,7 @@ import java.util.*
 fun main() {
     val gameApp = GameApp()
     val scanner = Scanner(System.`in`)
-    gameApp.InitUnitType()
+    gameApp.initUnitType()
     gameApp.initUnits()
     var check = true
     println()

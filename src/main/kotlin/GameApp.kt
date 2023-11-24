@@ -1,44 +1,54 @@
 import java.util.*
 
 class GameApp {
-    //TODO: удалить все ячейки у которых тип FREE и всю связанную с ними логику
     private val gameField = HashMap<Coords, Cell>()
     private lateinit var humanUnitType: UnitType
     private lateinit var orcUnitType: UnitType
     private var humanUnitActualNumber: Int = 1
     private var orcUnitActualNumber: Int = 1
 
+
     val humanUnits = HashMap<Coords, Unit>()
     val orcUnits = HashMap<Coords, Unit>()
+    val gameUnitGroups = HashMap<UnitType.Race, HashMap<Coords, Unit>>()
 
-    fun InitUnitType() {
+    fun initUnitType() {
         humanUnitType = UnitType(UnitType.Race.HUMAN)
         orcUnitType = UnitType(UnitType.Race.ORC)
+
+        gameUnitGroups[UnitType.Race.HUMAN] = humanUnits
+        gameUnitGroups[UnitType.Race.ORC] = orcUnits
     }
 
     fun initUnits() {
-        for (i in 0 until GameSettings.GlobalParams.HUMAN_MAX_QTY) {
-            var coords: Coords
-            do {        //TODO: возможен бесконечный цикл если все поле занято
-                coords = Coords(
-                    Random().nextInt(GameSettings.GlobalParams.FIELD_X - 1),
-                    Random().nextInt(GameSettings.GlobalParams.FIELD_Y - 1)
-                )
-            } while (gameField.containsKey(coords))
-            gameField[coords] = Cell(Cell.CellTypes.UNIT)
-            humanUnits[coords] = Unit(humanUnitType, coords, humanUnitActualNumber++)
-        }
+        for (group in gameUnitGroups) {
+            var unitQty = 0
 
-        for (i in 0 until GameSettings.GlobalParams.ORC_MAX_QTY) {
-            var coords: Coords
-            do {        //TODO: возможен бесконечный цикл если все поле занято
-                coords = Coords(
-                    Random().nextInt(GameSettings.GlobalParams.FIELD_X - 1),
-                    Random().nextInt(GameSettings.GlobalParams.FIELD_Y - 1)
-                )
-            } while (gameField.containsKey(coords))
-            gameField[coords] = Cell(Cell.CellTypes.UNIT)
-            orcUnits[coords] = Unit(orcUnitType, coords, orcUnitActualNumber++)
+            if (group.key == UnitType.Race.HUMAN)
+                unitQty = GameSettings.GlobalParams.HUMAN_MAX_QTY
+
+            else if (group.key == UnitType.Race.ORC)
+                unitQty = GameSettings.GlobalParams.ORC_MAX_QTY
+
+            for (i in 0..< unitQty) {
+                var coords: Coords
+                do {
+                    //TODO: возможен бесконечный цикл если все поле занято
+                    coords = Coords(
+                        Random().nextInt(GameSettings.GlobalParams.FIELD_X - 1),
+                        Random().nextInt(GameSettings.GlobalParams.FIELD_Y - 1)
+                    )
+                } while (gameField.containsKey(coords))
+
+                gameField[coords] = Cell(Cell.CellTypes.UNIT)
+
+                if (group.key == UnitType.Race.HUMAN)
+                    group.value[coords] = Unit(humanUnitType, coords, humanUnitActualNumber++)
+
+                if (group.key == UnitType.Race.ORC)
+                    group.value[coords] = Unit(orcUnitType, coords, orcUnitActualNumber++)
+
+            }
         }
     }
 
@@ -76,19 +86,25 @@ class GameApp {
         //Если победа, то передвинуть юнита
 
         val movedUnits = HashMap<Coords, Coords>()  //key = новые координаты, value = старые координаты
+
         for ((actualCoords, unit) in unitMap) {
             val destination: Coords = getMoveDestination(actualCoords)
-            val newCoords: Coords = getMoveCroords(
+            val newCoords: Coords = getMoveCoords(
                 actualCoords,
                 destination.X * unit.getSpeed(),
                 destination.Y * unit.getSpeed()
             )
-            if (!gameField.containsKey(newCoords))
-                movedUnits[newCoords] = actualCoords
+            //TODO: добавить бой между юнитами
 
+            if (gameField.containsKey(newCoords))
+                //драка
+            else if (!gameField.containsKey(newCoords))
+                movedUnits[newCoords] = actualCoords
         }
+
         for ((key, value) in movedUnits) {
-            moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
+            if (key != value)
+                moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
         }
     }
 
@@ -121,14 +137,19 @@ class GameApp {
         return destination
     }
 
-    private fun getMoveCroords(unitCoords: Coords, delta_x: Int, delta_y: Int): Coords {
+    private fun getMoveCoords(unitCoords: Coords, deltaX: Int, deltaY: Int): Coords {
         val newCoords = Coords(0, 0)
-        if (unitCoords.X + delta_x > GameSettings.GlobalParams.FIELD_X - 1) newCoords.X =
-            GameSettings.GlobalParams.FIELD_X - 1 else if (unitCoords.X + delta_x < 0) newCoords.X = 0 else newCoords.X =
-            unitCoords.X + delta_x
-        if (unitCoords.Y + delta_y > GameSettings.GlobalParams.FIELD_Y - 1) newCoords.Y =
-            GameSettings.GlobalParams.FIELD_Y - 1 else if (unitCoords.Y + delta_y < 0) newCoords.Y = 0 else newCoords.Y =
-            unitCoords.Y + delta_y
+        if (unitCoords.X + deltaX > GameSettings.GlobalParams.FIELD_X - 1)
+            newCoords.X = GameSettings.GlobalParams.FIELD_X - 1
+        else if (unitCoords.X + deltaX < 0)
+            newCoords.X = 0 else newCoords.X = unitCoords.X + deltaX
+
+        if (unitCoords.Y + deltaY > GameSettings.GlobalParams.FIELD_Y - 1)
+            newCoords.Y = GameSettings.GlobalParams.FIELD_Y - 1
+        else if (unitCoords.Y + deltaY < 0)
+            newCoords.Y = 0
+        else newCoords.Y = unitCoords.Y + deltaY
+
         return newCoords
     }
 
