@@ -1,17 +1,13 @@
 import java.util.concurrent.atomic.AtomicInteger
 
-class Unit {
+class Unit (unitType: UnitType, coords: Coords) {
     private val count = AtomicInteger(0)
-    private var id = 0
-    private var type: UnitType? = null
-    private var health = 0
-    private var isAlive = false
+    private var id = count.incrementAndGet()
+    private var type: UnitType = unitType
+    private var health = unitType.getHealth()
+    private var isAlive = true
 
-    fun Unit(unitType: UnitType, coords: Coords) {
-        id = count.incrementAndGet()
-        type = unitType
-        health = unitType.getHealth()
-        isAlive = true
+    init {
         println(
             (unitType.getMyRace().toString() + " №" + id +
                     " создан, координаты: " + coords.X).toString() + " ," + coords.Y
