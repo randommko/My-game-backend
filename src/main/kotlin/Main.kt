@@ -7,7 +7,7 @@ fun main() {
     gameApp.initUnits()
     var check = true
     println()
-    var stepCounter: Int = 1
+    var stepCounter = 1
 
     Thread {
         while (check) {

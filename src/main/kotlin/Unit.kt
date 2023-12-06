@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicInteger
 
 class Unit (unitType: UnitType, coords: Coords, id: Int) {
-    private val count = AtomicInteger(0)
+    //private val count = AtomicInteger(0)
     private val id = id
     private var type: UnitType = unitType
     private var health = unitType.getHealth()
@@ -10,7 +10,7 @@ class Unit (unitType: UnitType, coords: Coords, id: Int) {
     init {
         println(
             (unitType.getMyRace().toString() + " №" + id +
-                    " создан, координаты: " + coords.X).toString() + " ," + coords.Y
+                    " создан, координаты: " + coords.X) + " ," + coords.Y
         )
     }
 
