@@ -8,7 +8,6 @@ class GameApp {
     private var humanUnitActualNumber: Int = 1
     private var orcUnitActualNumber: Int = 1
 
-
     val humanUnits = HashMap<Coords, Unit>()
     val orcUnits = HashMap<Coords, Unit>()
     val gameUnitGroups = HashMap<UnitType.Race, HashMap<Coords, Unit>>()
@@ -76,7 +75,7 @@ class GameApp {
         println("--- --- --- ---")
     }
 
-    fun doGameStep(unitsRace: UnitType.Race, unitMap: HashMap<Coords, Unit>) {
+    fun doGameStep(friendlyUnitMap: HashMap<Coords, Unit>, enemyUnitMap: HashMap<Coords, Unit>) {
 
         //Передвинуть юнитов
         //Выбрать в какую сторону двигаться - getMoveDestination(Coords actualCoords)
@@ -87,7 +86,7 @@ class GameApp {
 
         val movedUnits = HashMap<Coords, Coords>()  //key = новые координаты, value = старые координаты
 
-        for ((actualCoords, unit) in unitMap) {
+        for ((actualCoords, unit) in friendlyUnitMap) {
             val destination: Coords = getMoveDestination(actualCoords)
             val newCoords: Coords = getMoveCoords(
                 actualCoords,
@@ -95,15 +94,25 @@ class GameApp {
                 destination.Y * unit.getSpeed()
             )
 
-            if (gameField.containsKey(newCoords))
-                //TODO: драка
-            else if (!gameField.containsKey(newCoords))
+            //если для новых координат поле занято и текущая мапа юнитов свободна, то там стоит враг
+            if (gameField.containsKey(newCoords) and (enemyUnitMap.containsKey(newCoords))) {
+                if (enemyUnitMap[newCoords]?.takeDamage(friendlyUnitMap[actualCoords]?.getDamage())!! > 0) {
+                    if (friendlyUnitMap[actualCoords]?.takeDamage(enemyUnitMap[newCoords]?.getDamage())!! <= 0) {
+                        friendlyUnitMap.remove(actualCoords)
+                    }
+                }
+                else {
+                    movedUnits[newCoords] = actualCoords
+                }
+            }
+            else {
                 movedUnits[newCoords] = actualCoords
+            }
         }
 
         for ((key, value) in movedUnits) {
             if (key != value)
-                moveUnit(unitMap, key, value)   //key = новые координаты, value = старые координаты
+                moveUnit(friendlyUnitMap, key, value)   //key = новые координаты, value = старые координаты
         }
     }
 
