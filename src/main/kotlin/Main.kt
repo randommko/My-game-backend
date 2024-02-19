@@ -3,18 +3,18 @@ import java.util.*
 fun main() {
     val gameApp = GameApp()
     val scanner = Scanner(System.`in`)
-    gameApp.InitUnitType()
+    gameApp.initUnitType()
     gameApp.initUnits()
     var check = true
     println()
-    var stepCounter: Int = 1
+    var stepCounter = 1
 
     Thread {
         while (check) {
             println("Шаг: $stepCounter")
             gameApp.printField()
-            gameApp.doGameStep(gameApp.humanUnits)
-            gameApp.doGameStep(gameApp.orcUnits)
+            gameApp.doGameStep(gameApp.humanUnits, gameApp.orcUnits)
+            gameApp.doGameStep(gameApp.orcUnits, gameApp.humanUnits)
             try {
                 Thread.sleep(300)
             } catch (e: InterruptedException) {
